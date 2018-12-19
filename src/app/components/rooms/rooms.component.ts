@@ -6,6 +6,7 @@ import {Room} from '../../models/room.model';
 import {Floor} from '../../models/floor.model';
 import {combineLatest, interval, Subscription} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-floor-detail',
@@ -17,12 +18,14 @@ export class RoomsComponent implements OnInit {
   floorId: string;
   floor: Floor;
   rooms: Room[];
+  selectedRoom: Room = null;
   listView: boolean;
 
   constructor(private route: ActivatedRoute,
               private floorService: FloorService,
               private roomService: RoomService,
-              private eRef: ElementRef) {
+              private eRef: ElementRef,
+              public snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -44,10 +47,9 @@ export class RoomsComponent implements OnInit {
   private setOccupiedTimer(rooms: Room[]) {
     rooms.filter(r => r.occupied).forEach(room => {
       const timer = interval(1000)
-        .pipe(
-          map(_ => {
+        .pipe(map(_ => {
             const now = new Date().getTime();
-            const future = room.reservationStart + (room.reservationDuration * 3600000); // 3600000
+            const future = room.reservationStart + (room.reservationDuration * 10000); // 3600000
             return future - now;
           })
         ).subscribe(timeLeft => {
@@ -56,8 +58,6 @@ export class RoomsComponent implements OnInit {
             timer.unsubscribe();
             room.occupied = false;
             room.timeLeft = '';
-            room.reservationStart = null;
-            room.reservationDuration = 0;
             this.updateRoom(room);
           }
         });
@@ -68,13 +68,7 @@ export class RoomsComponent implements OnInit {
   @HostListener('document:click', ['$event'])
   onClickOutside(event) {
     if (this.rooms && !this.eRef.nativeElement.contains(event.target)) {
-      this.deselectRooms();
-    }
-  }
-
-  deselectRooms() {
-    if (this.rooms) {
-      this.rooms.forEach(r => r.isSelected = false);
+      this.selectedRoom = null;
     }
   }
 
@@ -84,13 +78,14 @@ export class RoomsComponent implements OnInit {
   }
 
   selectRoom(room: Room) {
-    this.rooms.forEach(r => r.isSelected = false);
-    room.isSelected = !room.isSelected;
+    this.selectedRoom = room;
   }
 
   updateRoom(room: Room) {
-    room.isSelected = false;
-    this.roomService.updateRoom(this.campusId, this.floorId, room.name, room).subscribe((rooom: Room) => {
+    this.roomService.updateRoom(this.campusId, this.floorId, room.name, room).subscribe(_ => {
+      this.snackBar.open('Room was saved.', 'Cool', {
+        duration: 3000
+      });
     });
   }
 

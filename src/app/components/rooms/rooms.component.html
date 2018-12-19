@@ -20,22 +20,22 @@
        class="room"
        (click)="selectRoom(room)"
        [class.occupied]="room.occupied"
-       [class.selected-room]="room.isSelected"
+       [class.selected-room]="room == selectedRoom"
        [style.grid-row]="room.dimensions.y"
        [style.grid-column]="room.dimensions.x">
     <h1>{{room.name}}
     </h1>
-    <span *ngIf="room.type == 'cafetaria' || room.type == 'studielandschap'"
+    <span *ngIf="['cafetaria', 'studielandschap'].includes(room.type)"
           matTooltip="Drukte: {{room.crowdedness}}. Capaciteit: {{room.capacity}}"
           class="crowdedness" [style.color]="getCrowdednessColor(room)">{{room.crowdedness}}/{{room.capacity}}
       <mat-icon class="capacity-icon">people</mat-icon></span>
 
-    <span *ngIf="room.occupied == true && (room.type == 'vergaderzaal' || room.type == 'aula' || room.type == 'klaslokaal')"
+    <span *ngIf="room.occupied == true && ['vergaderzaal', 'aula', 'klaslokaal'].includes(room.type)"
           matTooltip="Tijd tot de ruimte vrijkomt" class="crowdedness">{{room.timeLeft}}</span>
 
-    <div class="extras" *ngIf="room.isSelected">
+    <div class="extras" *ngIf="room == selectedRoom">
       <ng-container
-        *ngIf="room.occupied == false && (room.type == 'vergaderzaal' || room.type == 'aula' || room.type == 'klaslokaal')">
+        *ngIf="room.occupied == false && ['vergaderzaal', 'aula', 'klaslokaal'].includes(room.type)">
         <button mat-raised-button [matMenuTriggerFor]='reserveMenu'>Reserveren</button>
         <mat-menu #reserveMenu="matMenu">
           <button mat-menu-item (click)="reserveRoom(room, 1)">1 uur</button>
@@ -43,9 +43,8 @@
           <button mat-menu-item (click)="reserveRoom(room, 3)">3 uur</button>
         </mat-menu>
       </ng-container>
-      <mat-slider *ngIf="room.type == 'cafetaria' || room.type == 'studielandschap'"
+      <mat-slider *ngIf="['cafetaria', 'studielandschap'].includes(room.type)"
                   thumbLabel
-                  min="0"
                   [max]="room.capacity"
                   [value]="room.crowdedness"
                   (input)="room.crowdedness = $event.value"

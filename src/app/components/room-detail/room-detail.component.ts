@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import {RoomService} from '../../services/room.service';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {Room} from '../../models/room.model';
 import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 import {switchMap} from 'rxjs/operators';
 import initCaps from '../../util/string.util';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-room-detail',
@@ -26,7 +27,8 @@ export class RoomDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private roomService: RoomService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              public snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -56,7 +58,11 @@ export class RoomDetailComponent implements OnInit {
 
   onFormSubmit(room: Room) {
     this.roomService.updateRoom(this.campusId, this.floorId.toString(), this.roomId, room).subscribe(_ => {
-      this.router.navigate(['/campuses', this.campusId, 'floors', this.floorId]);
+      this.snackBar.open('Settings saved.', 'Back to overview', {
+        duration: 3000
+      }).onAction().subscribe(_ => {
+        this.router.navigate(['/campuses', this.campusId, 'floors', this.floorId]);
+      });
     });
   }
 

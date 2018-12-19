@@ -5,7 +5,6 @@ export class Room {
   crowdedness: number;
   type: string;
   occupied: boolean;
-  isSelected: boolean;
   reservationStart: number;
   reservationDuration: number;
   timeLeft: string;
