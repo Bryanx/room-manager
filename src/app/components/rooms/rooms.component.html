@@ -21,10 +21,11 @@
        (click)="selectRoom(room)"
        [class.occupied]="room.occupied"
        [class.selected-room]="room == selectedRoom"
-       [style.grid-row]="room.dimensions.y"
-       [style.grid-column]="room.dimensions.x">
-    <h1>{{room.name}}
-    </h1>
+       [style.grid-row-start]="room.dimensions.y"
+       [style.grid-row-end]="room.dimensions.y + room.dimensions.height"
+       [style.grid-column-start]="room.dimensions.x"
+       [style.grid-column-end]="room.dimensions.x + room.dimensions.width">
+    <h1>{{room.name}}</h1>
     <span *ngIf="['cafetaria', 'studielandschap'].includes(room.type)"
           matTooltip="Drukte: {{room.crowdedness}}. Capaciteit: {{room.capacity}}"
           class="crowdedness" [style.color]="getCrowdednessColor(room)">{{room.crowdedness}}/{{room.capacity}}
@@ -53,7 +54,7 @@
     <mat-icon *ngIf="room == selectedRoom"
               class="info"
               matTooltip="Meer informatie"
-              [routerLink]="['/campuses/', campusId, 'floors', floorId, 'rooms', room.name]">info</mat-icon>
+              [routerLink]="['/campuses/', campusId, 'floors', floorId, 'rooms', room.id]">info</mat-icon>
     <mat-icon *ngIf="room.beamer"
               class="beamer"
               matTooltip="Beamer aanwezig">linked_camera</mat-icon>

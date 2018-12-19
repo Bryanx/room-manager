@@ -50,7 +50,7 @@ export class RoomsComponent implements OnInit {
       const timer = interval(1000)
         .pipe(map(_ => {
             const now = new Date().getTime();
-            const future = room.reservationStart + (room.reservationDuration * 10000); // 3600000
+            const future = room.reservationStart + (room.reservationDuration * 3600000); // 3600000
             return future - now;
           })
         ).subscribe(timeLeft => {
@@ -83,7 +83,7 @@ export class RoomsComponent implements OnInit {
   }
 
   updateRoom(room: Room, showSnackbar: boolean = true) {
-    this.roomService.updateRoom(this.campusId, this.floorId, room.name, room).subscribe(_ => {
+    this.roomService.updateRoom(this.campusId, this.floorId, room.id, room).subscribe(_ => {
       if (showSnackbar) {
         this.snackBar.open('Room was saved.', 'Dismiss', {
           duration: 3000
