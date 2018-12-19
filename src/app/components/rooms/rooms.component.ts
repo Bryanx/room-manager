@@ -1,10 +1,10 @@
 import {Component, ElementRef, HostListener, OnInit} from '@angular/core';
-import {ActivatedRoute, ParamMap} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, ParamMap, Router} from '@angular/router';
 import {FloorService} from '../../services/floor.service';
 import {RoomService} from '../../services/room.service';
 import {Room} from '../../models/room.model';
 import {Floor} from '../../models/floor.model';
-import {combineLatest, interval, Subscription} from 'rxjs';
+import {combineLatest, interval} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {MatSnackBar} from '@angular/material';
 
@@ -25,6 +25,7 @@ export class RoomsComponent implements OnInit {
               private floorService: FloorService,
               private roomService: RoomService,
               private eRef: ElementRef,
+              private router: Router,
               public snackBar: MatSnackBar) {
   }
 
@@ -96,5 +97,13 @@ export class RoomsComponent implements OnInit {
     room.reservationStart = new Date().getTime();
     room.reservationDuration = hours;
     this.updateRoom(room);
+  }
+
+  goFloorUp() {
+    this.router.navigate(['/campuses', this.campusId, 'floors', +this.floorId + 1]);
+  }
+
+  goFloorDown() {
+    this.router.navigate(['/campuses', this.campusId, 'floors', +this.floorId - 1]);
   }
 }

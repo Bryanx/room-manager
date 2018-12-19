@@ -1,12 +1,12 @@
 <header>
   <section class="buttons">
-    <button mat-icon-button><mat-icon>arrow_upward</mat-icon></button>
-    <button mat-icon-button><mat-icon>arrow_downward</mat-icon></button>
+    <button mat-icon-button (click)="goFloorDown()"><mat-icon>arrow_downward</mat-icon></button>
+    <button mat-icon-button (click)="goFloorUp()"><mat-icon>arrow_upward</mat-icon></button>
   </section>
 
   <section>
-    <h1>Verdieping <span *ngIf="floor">{{floor.number}}</span></h1>
-    <h2><span *ngIf="floor">{{floor.description}} </span></h2>
+    <h1>Verdieping {{floorId}}</h1>
+    <h2>{{floor != null ? floor.description : 'Deze verdieping bestaat niet.'}}</h2>
   </section>
 
   <section class="buttons view-buttons">
@@ -50,7 +50,8 @@
                   (input)="room.crowdedness = $event.value"
                   (blur)="updateRoom(room)"></mat-slider>
     </div>
-    <mat-icon class="info"
+    <mat-icon *ngIf="room == selectedRoom"
+              class="info"
               matTooltip="Meer informatie"
               [routerLink]="['/campuses/', campusId, 'floors', floorId, 'rooms', room.name]">info</mat-icon>
     <mat-icon *ngIf="room.beamer"

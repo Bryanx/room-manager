@@ -60,7 +60,7 @@ export class RoomDetailComponent implements OnInit {
     this.roomService.updateRoom(this.campusId, this.floorId.toString(), this.roomId, room).subscribe(_ => {
       this.snackBar.open('Settings saved.', 'Back to overview', {
         duration: 3000
-      }).onAction().subscribe(_ => {
+      }).onAction().subscribe(data => {
         this.router.navigate(['/campuses', this.campusId, 'floors', this.floorId]);
       });
     });
