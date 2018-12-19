@@ -1,0 +1,31 @@
+
+@font-face {
+  font-family: Megrim;
+  src: url(~src/assets/fonts/Megrim.ttf);
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: 'Open Sans', sans-serif; }
+
+* {
+  outline: none;
+}
+
+$color-red: #f63854;
+$dark-red: #f6aab7;
+$color-blue: #031d5b;
+
+h1 {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  color: white;
+}
+
+h2 {
+  text-align: center;
+  font-size: .8rem;
+  padding: .5rem 0 4rem 0;
+  color: white;
+  font-weight: 400;
+}

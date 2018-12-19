@@ -1,0 +1,21 @@
+<header class="logo">
+  <span routerLink="/">Roomy</span>
+</header>
+
+<nav>
+  <button mat-button [matMenuTriggerFor]='menu'>Campussen</button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item *ngFor="let campus of campuses" [routerLink]="['/campuses/', campus.name.toLowerCase()]">
+      {{campus.name}}
+    </button>
+  </mat-menu>
+  <button mat-ripple routerLink="about">About</button>
+</nav>
+
+<section class="router">
+  <router-outlet></router-outlet>
+</section>
+
+<footer>
+  &copy; 2018 - Bryan de Ridder
+</footer>

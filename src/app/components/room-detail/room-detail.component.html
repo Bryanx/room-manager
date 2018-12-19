@@ -1,0 +1,38 @@
+<h1>Ruimte: <span *ngIf="room">{{room.name}}</span></h1>
+<h2>Op verdieping <span *ngIf="floorId">{{floorId}}</span></h2>
+
+<form *ngIf="room && roomForm" [formGroup]="roomForm" (submit)="onFormSubmit(roomForm.value)">
+  <mat-card>
+    <mat-form-field>
+      <input matInput placeholder="Name" formControlName="name" [errorStateMatcher]="matcher">
+      <mat-error>
+        <span *ngIf="!roomForm.get('name').valid && roomForm.get('name').touched">
+          Please enter the room name.
+        </span>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Type" formControlName="type" [errorStateMatcher]="matcher">
+      <mat-error>
+        <span *ngIf="!roomForm.get('type').valid && roomForm.get('type').touched">
+          Please enter the room type.
+        </span>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="half-field">
+      <input type="number" matInput placeholder="Drukte" formControlName="crowdedness">
+    </mat-form-field>
+    <mat-form-field class="half-field">
+      <input type="number" matInput placeholder="Capaciteit" formControlName="capacity"
+             [errorStateMatcher]="matcher">
+      <mat-error>
+        <span *ngIf="!roomForm.get('capacity').valid && roomForm.get('capacity').touched">
+          Please enter the rooms capacity.
+        </span>
+      </mat-error>
+    </mat-form-field>
+    <mat-checkbox formControlName="occupied">Occupied</mat-checkbox>
+    <mat-checkbox formControlName="beamer">Beamer</mat-checkbox>
+    <button type="submit" color="primary" mat-raised-button>Opslaan</button>
+  </mat-card>
+</form>

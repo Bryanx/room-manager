@@ -1,0 +1,89 @@
+@import "../styles.scss";
+
+:host {
+  background: radial-gradient(#0c76df 0%, #073e92 100%);
+  overflow-x: hidden;
+  margin: 0;
+  font: 1rem 'Fira Sans', sans-serif;
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 1fr;
+  grid-template-rows: 100px 100px auto 40px;
+  grid-template-areas: "logo" "nav" "router" "footer";
+}
+
+
+.logo {
+  grid-area: logo;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 3rem 'Megrim';
+  color: white;
+  background: $color-red;
+
+  span {
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+    outline: none;
+    cursor: pointer;
+  }
+}
+
+nav {
+  grid-area: nav;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: $color-red;
+
+  button {
+    background: rgba(0, 0, 0, .1);
+    border: none;
+    color: white;
+    border-radius: 2rem;
+    height: 2.3rem;
+    padding: 0 1rem;
+    margin: .5rem .5rem 0 .5rem;
+    font-size: .9rem;
+    outline: none;
+    cursor: pointer;
+
+    &:hover {
+      background: white;
+      color: $color-blue;
+    }
+  }
+}
+
+.router {
+  grid-area: router;
+  padding-top: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-size: 2rem 2rem;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, .1) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, .1) 1px, transparent 1px);
+}
+
+footer {
+  grid-area: footer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .8rem;
+  color: white;
+  border-top: 1px solid rgba(255,255,255,.1);
+}
+
+
+@media only screen and (min-width: 800px) {
+  :host {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 100px auto 40px;
+    grid-template-areas: "logo nav" "router router" "footer footer";
+  }
+}
