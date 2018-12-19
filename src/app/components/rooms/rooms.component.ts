@@ -58,7 +58,7 @@ export class RoomsComponent implements OnInit {
             timer.unsubscribe();
             room.occupied = false;
             room.timeLeft = '';
-            this.updateRoom(room);
+            this.updateRoom(room, false);
           }
         });
     });
@@ -81,11 +81,13 @@ export class RoomsComponent implements OnInit {
     this.selectedRoom = room;
   }
 
-  updateRoom(room: Room) {
+  updateRoom(room: Room, showSnackbar: boolean = true) {
     this.roomService.updateRoom(this.campusId, this.floorId, room.name, room).subscribe(_ => {
-      this.snackBar.open('Room was saved.', 'Cool', {
-        duration: 3000
-      });
+      if (showSnackbar) {
+        this.snackBar.open('Room was saved.', 'Dismiss', {
+          duration: 3000
+        });
+      }
     });
   }
 
