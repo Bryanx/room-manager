@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {RoomService} from '../../services/room.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {Room} from '../../models/room.model';
-import {FormBuilder, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
+import {switchMap} from 'rxjs/operators';
+import initCaps from '../../util/string.util';
 
 @Component({
   selector: 'app-room-detail',
@@ -10,11 +12,15 @@ import {FormBuilder, FormControl, FormGroup, NgForm, Validators} from '@angular/
   styleUrls: ['./room-detail.component.scss']
 })
 export class RoomDetailComponent implements OnInit {
-  room: Room;
+  initCaps = initCaps;
+  room: Room = <Room> {
+    name: '',
+    type: '',
+  };
   roomForm: FormGroup;
   error: boolean;
   campusId: string;
-  floorId: string;
+  floorId: String = '0';
   roomId: string;
 
   constructor(private route: ActivatedRoute,
@@ -24,33 +30,34 @@ export class RoomDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.campusId = this.route.snapshot.params['campusId'];
-    this.floorId = this.route.snapshot.params['floorId'];
-    this.roomId = this.route.snapshot.params['roomId'];
-    this.getRoom();
-    this.roomForm = this.formBuilder.group({
-      'name': [null, Validators.required],
-      'type': [null, Validators.required],
-      'capacity': [null, Validators.required],
-      'crowdedness': null,
-      'occupied': new FormControl(false),
-      'beamer': new FormControl(false),
-    });
+    this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => {
+        this.campusId = params.get('campusId');
+        this.floorId = params.get('floorId');
+        this.roomId = params.get('roomId');
+        return this.roomService.getRoom(this.campusId, this.floorId.toString(), this.roomId);
+      })).subscribe(data => this.fillForm(data));
   }
 
-  private getRoom() {
-    this.roomService.getRoom(this.campusId, this.floorId, this.roomId)
-      .subscribe(data => {
-        this.room = data;
-        this.roomForm.setValue(data);
-      }, error => {
-        this.error = true;
-      });
+  private fillForm(data: Room) {
+    this.room = data;
+    this.roomForm = this.formBuilder.group({
+      'name': [data.name, Validators.required],
+      'type': [data.type, Validators.required],
+      'capacity': [data.capacity, Validators.required],
+      'occupied': data.occupied,
+      'beamer': data.beamer,
+      'dimensions.x': data.dimensions.x,
+      'dimensions.y': data.dimensions.y,
+      'dimensions.width': data.dimensions.width,
+      'dimensions.height': data.dimensions.height,
+    });
   }
 
   onFormSubmit(room: Room) {
-    this.roomService.updateRoom(this.campusId, this.floorId, this.roomId, room).subscribe(_ => {
+    this.roomService.updateRoom(this.campusId, this.floorId.toString(), this.roomId, room).subscribe(_ => {
       this.router.navigate(['/campuses', this.campusId, 'floors', this.floorId]);
     });
   }
+
 }

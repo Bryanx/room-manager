@@ -1,5 +1,5 @@
-<h1>Ruimte: <span *ngIf="room">{{room.name}}</span></h1>
-<h2>Op verdieping <span *ngIf="floorId">{{floorId}}</span></h2>
+<h1>{{initCaps(room.type)}}: {{room.name}}</h1>
+<h2>Op verdieping {{floorId}}</h2>
 
 <form *ngIf="room && roomForm" [formGroup]="roomForm" (submit)="onFormSubmit(roomForm.value)">
   <mat-card>
@@ -19,10 +19,7 @@
         </span>
       </mat-error>
     </mat-form-field>
-    <mat-form-field class="half-field">
-      <input type="number" matInput placeholder="Drukte" formControlName="crowdedness">
-    </mat-form-field>
-    <mat-form-field class="half-field">
+    <mat-form-field>
       <input type="number" matInput placeholder="Capaciteit" formControlName="capacity"
              [errorStateMatcher]="matcher">
       <mat-error>
@@ -30,6 +27,18 @@
           Please enter the rooms capacity.
         </span>
       </mat-error>
+    </mat-form-field>
+    <mat-form-field class="quarter-width">
+      <input type="number" matInput placeholder="X Coördinaten" formControlName="dimensions.x">
+    </mat-form-field>
+    <mat-form-field class="quarter-width">
+      <input type="number" matInput placeholder="Y Coördinaten" formControlName="dimensions.y">
+    </mat-form-field>
+    <mat-form-field class="quarter-width">
+      <input type="number" matInput placeholder="Breedte" formControlName="dimensions.width">
+    </mat-form-field>
+    <mat-form-field class="quarter-width">
+      <input type="number" matInput placeholder="Hoogte" formControlName="dimensions.height">
     </mat-form-field>
     <mat-checkbox formControlName="occupied">Occupied</mat-checkbox>
     <mat-checkbox formControlName="beamer">Beamer</mat-checkbox>
