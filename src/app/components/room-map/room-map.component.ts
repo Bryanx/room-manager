@@ -2,6 +2,8 @@ import {Component, ElementRef, HostBinding, HostListener, Input, OnChanges, OnIn
 import {Room} from '../../models/room.model';
 import {RoomService} from '../../services/room.service';
 import {MatSnackBar} from '@angular/material';
+import {interval, Subscription, timer} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-room-map',
@@ -14,6 +16,7 @@ export class RoomMapComponent implements OnChanges {
   @Input() floorId: string;
   @HostBinding('class.selected') selected: boolean;
   @HostBinding('class.occupied') occupied: boolean;
+  timer: Subscription;
 
   constructor(private roomService: RoomService,
               private eRef: ElementRef,
@@ -22,6 +25,9 @@ export class RoomMapComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['room']) {
       this.occupied = this.room.occupied;
+    }
+    if (this.occupied) {
+      this.setTimer();
     }
   }
 
@@ -52,6 +58,24 @@ export class RoomMapComponent implements OnChanges {
     room.occupied = true;
     room.reservationStart = new Date().getTime();
     room.reservationDuration = hours;
-    this.updateRoom(room);
+    this.updateRoom(room); // this will trigger changes, which will start a timer
+  }
+
+  setTimer() {
+    this.timer = interval(1000)
+      .pipe(map(_ => {
+          const now = new Date().getTime();
+          const future = this.room.reservationStart + (this.room.reservationDuration * 10000); // 3600000
+          return future - now;
+        })
+      ).subscribe(timeLeft => {
+        this.room.timeLeft = new Date(timeLeft).toUTCString().split(' ')[4];
+        if (timeLeft <= 1) {
+          this.timer.unsubscribe();
+          this.room.occupied = false;
+          this.room.timeLeft = '';
+          this.updateRoom(this.room, false);
+        }
+      });
   }
 }

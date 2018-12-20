@@ -1,7 +1,7 @@
 <header [class.list-view]="listView">
   <section class="buttons">
-    <button mat-icon-button (click)="goFloorDown()"><mat-icon>arrow_downward</mat-icon></button>
-    <button mat-icon-button (click)="goFloorUp()"><mat-icon>arrow_upward</mat-icon></button>
+    <button mat-icon-button (click)="changeFloor(-1)"><mat-icon>arrow_downward</mat-icon></button>
+    <button mat-icon-button (click)="changeFloor(1)"><mat-icon>arrow_upward</mat-icon></button>
   </section>
 
   <section>
