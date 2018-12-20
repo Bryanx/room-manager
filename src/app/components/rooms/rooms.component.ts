@@ -18,6 +18,7 @@ export class RoomsComponent implements OnInit {
   floor: Floor;
   rooms: Room[];
   listView: boolean;
+  clearView: boolean;
 
   constructor(private route: ActivatedRoute,
               private floorService: FloorService,

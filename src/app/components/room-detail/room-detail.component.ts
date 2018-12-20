@@ -14,7 +14,7 @@ import {MatSnackBar} from '@angular/material';
 })
 export class RoomDetailComponent implements OnInit {
   initCaps = initCaps;
-  room: Room = <Room> {
+  room: Room = <Room>{
     name: '',
     type: '',
   };
@@ -22,6 +22,7 @@ export class RoomDetailComponent implements OnInit {
   error: boolean;
   campusId: string;
   floorId: String = '0';
+  roomId: string;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -35,31 +36,34 @@ export class RoomDetailComponent implements OnInit {
       switchMap((params: ParamMap) => {
         this.campusId = params.get('campusId');
         this.floorId = params.get('floorId');
-        const roomId = params.get('roomId');
-        return this.roomService.getRoom(this.campusId, this.floorId.toString(), roomId);
+        this.roomId = params.get('roomId');
+        return this.roomService.getRoom(this.campusId, this.floorId.toString(), this.roomId);
       })).subscribe(data => this.fillForm(data));
   }
 
   private fillForm(room: Room) {
     this.room = room;
-    this.form = this.formBuilder.group(room);
-    this.addRequiredValidator('name', 'type', 'capacity');
-  }
-
-  private addRequiredValidator(...attributes) {
-    attributes.forEach(attribute => {
-      this.form.controls[attribute].setValidators([Validators.required]);
+    this.form = this.formBuilder.group({
+      'name': [room.name, Validators.required],
+      'type': [room.type, Validators.required],
+      'capacity': [room.capacity, Validators.required],
+      'crowdedness': room.crowdedness,
+      'occupied': room.occupied,
+      'beamer': room.beamer,
+      'x': room.dimensions.x,
+      'y': room.dimensions.y,
+      'width': room.dimensions.width,
+      'height': room.dimensions.height,
     });
   }
 
   onFormSubmit(room: Room) {
-    this.roomService.updateRoom(this.campusId, this.floorId.toString(), room.id, room).subscribe(_ => {
-      this.snackBar.open('Settings saved.', 'Back to overview', {
-        duration: 3000
-      }).onAction().subscribe(data => {
-        this.router.navigate(['/campuses', this.campusId, 'floors', this.floorId]);
+    this.roomService.updateRoom(this.campusId, this.floorId.toString(), this.roomId, room).subscribe(_ => {
+        this.snackBar.open('Settings saved.', 'Back to overview', {
+          duration: 3000
+        }).onAction().subscribe(data => {
+          this.router.navigate(['/campuses', this.campusId, 'floors', this.floorId]);
+        });
       });
-    });
   }
-
 }

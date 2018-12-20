@@ -1,5 +1,5 @@
 <h1>{{room.name}}</h1>
-<span *ngIf="['cafetaria', 'studielandschap'].includes(room.type)"
+<span *ngIf="!clearView && ['cafetaria', 'studielandschap'].includes(room.type)"
       matTooltip="Drukte: {{room.crowdedness}}. Capaciteit: {{room.capacity}}"
       class="crowdedness" [style.color]="getCrowdednessColor(room)">{{room.crowdedness}}/{{room.capacity}}
   <mat-icon class="capacity-icon">people</mat-icon></span>
@@ -17,7 +17,7 @@
       <button mat-menu-item (click)="reserveRoom(room, 3)">3 uur</button>
     </mat-menu>
   </ng-container>
-  <mat-slider *ngIf="['cafetaria', 'studielandschap'].includes(room.type)"
+  <mat-slider *ngIf="!clearView && ['cafetaria', 'studielandschap'].includes(room.type)"
               thumbLabel
               [max]="room.capacity"
               [value]="room.crowdedness"
@@ -28,10 +28,10 @@
           class="info"
           matTooltip="Meer informatie"
           [routerLink]="['/campuses/', campusId, 'floors', floorId, 'rooms', room.id]">info</mat-icon>
-<mat-icon *ngIf="room.beamer"
+<mat-icon *ngIf="!clearView && room.beamer"
           class="beamer"
           matTooltip="Beamer aanwezig">linked_camera</mat-icon>
 <app-icon class="room-type"
-          [name]="room.type"
+          [name]="!clearView && room.type"
           matTooltip="{{room.type}}"
           [color]="'white'"></app-icon>
