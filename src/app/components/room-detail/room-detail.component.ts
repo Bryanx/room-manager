@@ -1,10 +1,10 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RoomService} from '../../services/room.service';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
-import {Room} from '../../models/room.model';
-import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
+import {Room, RoomType} from '../../models/room.model';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {switchMap} from 'rxjs/operators';
-import initCaps from '../../util/string.util';
+import {initCaps, getEnumValues} from '../../util/utils';
 import {MatSnackBar} from '@angular/material';
 
 @Component({
@@ -16,7 +16,7 @@ export class RoomDetailComponent implements OnInit {
   initCaps = initCaps;
   room: Room = <Room>{
     name: '',
-    type: '',
+    type: RoomType.onbekend,
   };
   form: FormGroup;
   error: boolean;
@@ -50,20 +50,25 @@ export class RoomDetailComponent implements OnInit {
       'crowdedness': room.crowdedness,
       'occupied': room.occupied,
       'beamer': room.beamer,
-      'x': room.dimensions.x,
-      'y': room.dimensions.y,
-      'width': room.dimensions.width,
-      'height': room.dimensions.height,
+      'dimensions.x': room.dimensions.x,
+      'dimensions.y': room.dimensions.y,
+      'dimensions.width': room.dimensions.width,
+      'dimensions.height': room.dimensions.height,
     });
   }
 
   onFormSubmit(room: Room) {
     this.roomService.updateRoom(this.campusId, this.floorId.toString(), this.roomId, room).subscribe(_ => {
-        this.snackBar.open('Settings saved.', 'Back to overview', {
+        this.snackBar.open('Opgeslagen', 'Terug naar overzicht', {
           duration: 3000
         }).onAction().subscribe(data => {
           this.router.navigate(['/campuses', this.campusId, 'floors', this.floorId]);
         });
       });
+  }
+
+  getRoomTypes() {
+      let enumValues = getEnumValues(RoomType);
+      return enumValues;
   }
 }

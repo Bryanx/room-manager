@@ -4,42 +4,52 @@
 <form *ngIf="room && form" [formGroup]="form" (submit)="onFormSubmit(form.value)">
   <mat-card>
     <mat-form-field>
-      <input matInput placeholder="Name" formControlName="name">
+      <input matInput required placeholder="Naam" formControlName="name">
       <mat-error *ngIf="!form.get('name').valid && form.get('name').touched">
           Please enter the room name.
       </mat-error>
     </mat-form-field>
+
     <mat-form-field>
-      <input matInput placeholder="Type" formControlName="type">
-      <mat-error *ngIf="!form.get('type').valid && form.get('type').touched">
-          Please enter the room type.
-      </mat-error>
+      <mat-select required placeholder="Kamer type" formControlName="type">
+        <mat-option *ngFor="let roomType of getRoomTypes()" [value]="roomType">
+          {{initCaps(roomType)}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
-    <mat-form-field *ngIf="['cafetaria', 'studielandschap'].includes(room.type)">
+
+    <mat-form-field class="half-width">
       <input type="number" matInput placeholder="Drukte" formControlName="crowdedness">
     </mat-form-field>
-    <mat-form-field>
-      <input type="number" matInput placeholder="Capaciteit" formControlName="capacity">
-      <mat-error>
-        <span *ngIf="!form.get('capacity').valid && form.get('capacity').touched">
+
+    <mat-form-field class="half-width">
+      <input type="number" matInput required placeholder="Capaciteit" formControlName="capacity">
+      <mat-error *ngIf="!form.get('capacity').valid && form.get('capacity').touched">
           Please enter the rooms capacity.
-        </span>
       </mat-error>
     </mat-form-field>
+
     <mat-form-field class="quarter-width">
-      <input type="number" matInput placeholder="X Coördinaten" formControlName="x">
+      <input type="number" matInput placeholder="X Coördinaten" formControlName="dimensions.x">
     </mat-form-field>
+
     <mat-form-field class="quarter-width">
-      <input type="number" matInput placeholder="Y Coördinaten" formControlName="y">
+      <input type="number" matInput placeholder="Y Coördinaten" formControlName="dimensions.y">
     </mat-form-field>
+
     <mat-form-field class="quarter-width">
-      <input type="number" matInput placeholder="Breedte" formControlName="width">
+      <input type="number" matInput placeholder="Breedte" formControlName="dimensions.width">
     </mat-form-field>
+
     <mat-form-field class="quarter-width">
-      <input type="number" matInput placeholder="Hoogte" formControlName="height">
+      <input type="number" matInput placeholder="Hoogte" formControlName="dimensions.height">
     </mat-form-field>
+
     <mat-checkbox formControlName="occupied">Bezet</mat-checkbox>
+
     <mat-checkbox formControlName="beamer">Beamer</mat-checkbox>
+
     <button type="submit" color="primary" mat-raised-button>Opslaan</button>
+
   </mat-card>
 </form>

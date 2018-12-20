@@ -1,19 +1,26 @@
+//variables
+$default-font: 'Open Sans', sans-serif;
+$color-red: #f63854;
+$color-blue: #031d5b;
 
 @font-face {
   font-family: Megrim;
   src: url(~src/assets/fonts/Megrim.ttf);
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: 'Open Sans', sans-serif; }
-
 * {
   outline: none;
+  box-sizing: border-box;
 }
 
-$color-red: #f63854;
-$dark-red: #f6aab7;
-$color-blue: #031d5b;
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: $default-font;
+}
 
 h1 {
   padding: 0;
@@ -28,4 +35,29 @@ h2 {
   padding: .5rem 0 4rem 0;
   color: white;
   font-weight: 400;
+}
+
+//mixins
+@mixin top-left-absolute($padding) {
+  position: absolute;
+  top: $padding;
+  left: $padding;
+}
+
+@mixin top-right-absolute($padding) {
+  position: absolute;
+  top: $padding;
+  right: $padding;
+}
+
+@mixin bottom-right-absolute($padding) {
+  position: absolute;
+  bottom: $padding;
+  right: $padding;
+}
+
+@mixin bottom-left-absolute($padding) {
+  position: absolute;
+  bottom: $padding;
+  left: $padding;
 }

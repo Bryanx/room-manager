@@ -1,8 +1,8 @@
-import {Component, ElementRef, HostBinding, HostListener, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Room} from '../../models/room.model';
+import {Component, ElementRef, HostBinding, HostListener, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Room, RoomType} from '../../models/room.model';
 import {RoomService} from '../../services/room.service';
 import {MatSnackBar} from '@angular/material';
-import {interval, Subscription, timer} from 'rxjs';
+import {interval, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 @Component({
@@ -18,18 +18,23 @@ export class RoomMapComponent implements OnChanges {
   @HostBinding('class.selected') selected: boolean;
   @HostBinding('class.occupied') occupied: boolean;
   timer: Subscription;
+  isReservable: boolean;
+  hasCrowdedness: boolean;
 
   constructor(private roomService: RoomService,
               private eRef: ElementRef,
-              public snackBar: MatSnackBar) { }
+              public snackBar: MatSnackBar) {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['room']) {
       this.occupied = this.room.occupied;
     }
     if (this.occupied) {
-      this.setTimer();
+      this.setOccupiedTimer();
     }
+    this.isReservable = !this.clearView && ['vergaderzaal', 'aula', 'klaslokaal'].includes(this.room.type.toString());
+    this.hasCrowdedness = !this.clearView && ['cafetaria', 'studielandschap'].includes(this.room.type.toString());
   }
 
   /**
@@ -45,10 +50,10 @@ export class RoomMapComponent implements OnChanges {
     return `hsl(${hue}, 100%, 50%)`;
   }
 
-  updateRoom(room: Room, showSnackbar: boolean = true) {
+  updateRoom(room: Room, showSnackbar: boolean = true, message: string = room.name + ' is opgeslagen.') {
     this.roomService.updateRoom(this.campusId, this.floorId, room.id, room).subscribe(_ => {
       if (showSnackbar) {
-        this.snackBar.open('Room was saved.', 'Dismiss', {
+        this.snackBar.open(message, 'OK', {
           duration: 3000
         });
       }
@@ -59,10 +64,10 @@ export class RoomMapComponent implements OnChanges {
     room.occupied = true;
     room.reservationStart = new Date().getTime();
     room.reservationDuration = hours;
-    this.updateRoom(room); // this will trigger changes, which will start a timer
+    this.updateRoom(room, true, room.name + ' werd gereserveerd.'); // this will trigger changes, which will start a timer
   }
 
-  setTimer() {
+  setOccupiedTimer() {
     this.timer = interval(1000)
       .pipe(map(_ => {
           const now = new Date().getTime();
@@ -75,7 +80,7 @@ export class RoomMapComponent implements OnChanges {
           this.timer.unsubscribe();
           this.room.occupied = false;
           this.room.timeLeft = '';
-          this.updateRoom(this.room, false);
+          this.updateRoom(this.room, true, this.room.name + ' is niet meer bezet.');
         }
       });
   }

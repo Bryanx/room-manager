@@ -1,10 +1,20 @@
+export enum RoomType {
+  vergaderzaal,
+  bureau,
+  klaslokaal,
+  aula,
+  cafetaria,
+  studielandschap,
+  onbekend,
+}
+
 export class Room {
   id: string;
   name: string;
+  type: RoomType;
   beamer: boolean;
   capacity: number;
   crowdedness: number;
-  type: string;
   occupied: boolean;
   reservationStart: number;
   reservationDuration: number;

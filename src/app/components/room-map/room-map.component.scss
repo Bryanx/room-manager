@@ -1,3 +1,7 @@
+@import "~src/styles";
+
+$room-padding: 1rem;
+
 :host.occupied {
   background-color: rgba(255, 45, 76, 0.32);
 }
@@ -19,67 +23,58 @@
   color: white;
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-direction: column;
+  justify-content: center;
   position: relative;
   border-radius: 0;
   transition: background-color .1s ease;
+}
 
-  h1 {
-    color: white;
+h1 {
+  color: white;
+}
+
+button {
+  border-radius: 5rem;
+}
+
+.room-type, .beamer, .info {
+  width: 1.5rem;
+  height: 1.4rem;
+}
+
+.crowdedness {
+  border-radius: 5rem;
+  background-color: rgba(0, 0, 0, .1);
+  padding: 0 .5rem 0 .5rem;
+  line-height: 1.6;
+  font-size: .9rem;
+
+  .capacity-icon {
+    font-size: 1rem;
+    width: 1rem;
+    height: .9rem;
+    vertical-align: middle;
+    padding-bottom: .2rem;
   }
+}
 
-  .extras {
-    position: absolute;
-    bottom: .5rem;
-    mat-slider {
-      min-width: 6rem;
-    }
 
-    button {
-      border-radius: 5rem;
-      margin-bottom: 1rem;
-    }
-  }
+/* ============= Positioning ============= */
 
-  .room-type, .beamer, .info {
-    width: 1.5rem;
-    height: 1.4rem;
-    position: absolute;
-  }
+.crowdedness {
+  @include top-left-absolute($room-padding);
+}
 
-  .info {
-    top: 1rem;
-    right: 1rem;
-    cursor: pointer;
-  }
+.info {
+  @include top-right-absolute($room-padding);
+  cursor: pointer;
+}
 
-  .crowdedness {
-    border-radius: 5rem;
-    background-color: rgba(0, 0, 0, .1);
-    padding: 0 .5rem 0 .5rem;
-    line-height: 1.6;
-    font-size: .9rem;
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
+.room-type {
+  @include bottom-left-absolute($room-padding);
+}
 
-    .capacity-icon {
-      font-size: 1rem;
-      width: 1rem;
-      height: .9rem;
-      vertical-align: middle;
-      padding-bottom: .2rem;
-    }
-  }
-
-  .beamer {
-    right: 1rem;
-    bottom: 1rem;
-  }
-
-  .room-type {
-    left: 1rem;
-    bottom: 1rem;
-  }
+.beamer {
+  @include bottom-right-absolute($room-padding);
 }
