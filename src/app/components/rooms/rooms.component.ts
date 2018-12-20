@@ -1,5 +1,5 @@
 import {Component, ElementRef, HostListener, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, ParamMap, Router} from '@angular/router';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {FloorService} from '../../services/floor.service';
 import {RoomService} from '../../services/room.service';
 import {Room} from '../../models/room.model';
@@ -18,13 +18,11 @@ export class RoomsComponent implements OnInit {
   floorId: string;
   floor: Floor;
   rooms: Room[];
-  selectedRoom: Room = null;
   listView: boolean;
 
   constructor(private route: ActivatedRoute,
               private floorService: FloorService,
               private roomService: RoomService,
-              private eRef: ElementRef,
               private router: Router,
               public snackBar: MatSnackBar) {
   }
@@ -50,7 +48,7 @@ export class RoomsComponent implements OnInit {
       const timer = interval(1000)
         .pipe(map(_ => {
             const now = new Date().getTime();
-            const future = room.reservationStart + (room.reservationDuration * 3600000); // 3600000
+            const future = room.reservationStart + (room.reservationDuration * 10000); // 3600000
             return future - now;
           })
         ).subscribe(timeLeft => {
@@ -65,22 +63,6 @@ export class RoomsComponent implements OnInit {
     });
   }
 
-  // Triggered when someone clicks outside this components.
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event) {
-    if (this.rooms && !this.eRef.nativeElement.contains(event.target)) {
-      this.selectedRoom = null;
-    }
-  }
-
-  getCrowdednessColor(room: Room) {
-    const hue = Math.abs(room.crowdedness / room.capacity * 120 - 120);
-    return `hsl(${hue}, 100%, 50%)`;
-  }
-
-  selectRoom(room: Room) {
-    this.selectedRoom = room;
-  }
 
   updateRoom(room: Room, showSnackbar: boolean = true) {
     this.roomService.updateRoom(this.campusId, this.floorId, room.id, room).subscribe(_ => {
@@ -90,13 +72,6 @@ export class RoomsComponent implements OnInit {
         });
       }
     });
-  }
-
-  reserveRoom(room: Room, hours: number) {
-    room.occupied = true;
-    room.reservationStart = new Date().getTime();
-    room.reservationDuration = hours;
-    this.updateRoom(room);
   }
 
   goFloorUp() {

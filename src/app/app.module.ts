@@ -27,6 +27,7 @@ import {
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RoomsComponent} from './components/rooms/rooms.component';
 import {SvgIconComponent} from './components/svg-icon/svg-icon.component';
+import { RoomMapComponent } from './components/room-map/room-map.component';
 
 const appRoutes: Routes = [
   {
@@ -53,6 +54,7 @@ const appRoutes: Routes = [
     RoomsComponent,
     RoomDetailComponent,
     SvgIconComponent,
+    RoomMapComponent,
   ],
   imports: [
     BrowserModule,

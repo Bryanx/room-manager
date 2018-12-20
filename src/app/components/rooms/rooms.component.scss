@@ -14,108 +14,25 @@ header {
   h1 {
     font-size: 1.5rem;
   }
+
   .buttons {
     width: 5.3rem;
     display: flex;
     justify-content: space-between;
+
     button {
-      background-color: rgba(255,255,255,.1);
-      color: rgba(255,255,255,.8);
+      background-color: rgba(255, 255, 255, .1);
+      color: rgba(255, 255, 255, .8);
     }
   }
 }
 
 .room-container {
   border: 1px solid white;
-
-  .room {
-    width: 100%;
-    min-height: 11rem;
-    border: 1px solid white;
-    outline: 1px dashed white;
-    outline-offset: -.3rem;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    position: relative;
-    border-radius: 0;
-    transition: background-color .1s ease;
-
-    h1 {
-      color: white;
-    }
-
-    .extras {
-      position: absolute;
-      bottom: .5rem;
-      mat-slider {
-        min-width: 6rem;
-      }
-
-      button {
-        border-radius: 5rem;
-        margin-bottom: 1rem;
-      }
-    }
-
-    .room-type, .beamer, .info {
-      width: 1.5rem;
-      height: 1.4rem;
-      position: absolute;
-    }
-
-    .info {
-      top: 1rem;
-      right: 1rem;
-      cursor: pointer;
-    }
-
-    .crowdedness {
-      border-radius: 5rem;
-      background-color: rgba(0, 0, 0, .1);
-      padding: 0 .5rem 0 .5rem;
-      line-height: 1.6;
-      font-size: .9rem;
-      position: absolute;
-      top: 1rem;
-      left: 1rem;
-
-      .capacity-icon {
-        font-size: 1rem;
-        width: 1rem;
-        height: .9rem;
-        vertical-align: middle;
-        padding-bottom: .2rem;
-      }
-    }
-
-    .beamer {
-      right: 1rem;
-      bottom: 1rem;
-    }
-
-    .room-type {
-      left: 1rem;
-      bottom: 1rem;
-    }
-  }
 }
 
-.occupied {
-  background-color: rgba(255, 45, 76, 0.32);
-}
 
-.selected-room {
-  background-color: rgba(0, 0, 0, .2);
-}
-
-.occupied.selected-room {
-  background-color: rgba(190, 29, 53, 0.35);
-}
-
-.list-view {
+section.list-view {
   display: flex;
   flex-direction: column;
 }
@@ -125,6 +42,10 @@ header {
 }
 
 @media only screen and (min-width: 800px) {
+  :host > .list-view, header.list-view {
+    width: 60%;
+    margin: 0 auto;
+  }
 
   .view-buttons {
     visibility: visible;
