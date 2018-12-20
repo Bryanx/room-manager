@@ -1,6 +1,8 @@
 @import "~src/styles";
 
 :host {
+  display: flex;
+  flex-direction: column;
   width: 90%;
   margin-bottom: 5rem;
 }
@@ -44,7 +46,7 @@ section.list-view {
 @media only screen and (min-width: 800px) {
   :host > .list-view, header.list-view {
     width: 60%;
-    margin: 0 auto;
+    align-self: center;
   }
 
   header .view-buttons {

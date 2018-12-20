@@ -10,21 +10,21 @@
 
 mat-card {
   padding: 2rem;
-}
 
-mat-form-field, mat-slider {
-  width: 100%;
-}
+  mat-form-field, mat-slider {
+    width: 100%;
+  }
 
-mat-checkbox {
-  margin: 0 1rem 0 0;
-}
+  mat-checkbox {
+    margin-right: 1rem;
+  }
 
-button {
-  border-radius: 5rem;
-  margin: .5rem 0;
-}
+  button {
+    border-radius: 5rem;
+    margin: .5rem 0;
+  }
 
-.quarter-width {
-  width: 25%;
+  .quarter-width {
+    width: 25%;
+  }
 }

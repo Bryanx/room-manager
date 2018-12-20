@@ -18,11 +18,10 @@ export class RoomDetailComponent implements OnInit {
     name: '',
     type: '',
   };
-  roomForm: FormGroup;
+  form: FormGroup;
   error: boolean;
   campusId: string;
   floorId: String = '0';
-  roomId: string;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -36,28 +35,25 @@ export class RoomDetailComponent implements OnInit {
       switchMap((params: ParamMap) => {
         this.campusId = params.get('campusId');
         this.floorId = params.get('floorId');
-        this.roomId = params.get('roomId');
-        return this.roomService.getRoom(this.campusId, this.floorId.toString(), this.roomId);
+        const roomId = params.get('roomId');
+        return this.roomService.getRoom(this.campusId, this.floorId.toString(), roomId);
       })).subscribe(data => this.fillForm(data));
   }
 
-  private fillForm(data: Room) {
-    this.room = data;
-    this.roomForm = this.formBuilder.group({
-      'name': [data.name, Validators.required],
-      'type': [data.type, Validators.required],
-      'capacity': [data.capacity, Validators.required],
-      'occupied': data.occupied,
-      'beamer': data.beamer,
-      'dimensions.x': data.dimensions.x,
-      'dimensions.y': data.dimensions.y,
-      'dimensions.width': data.dimensions.width,
-      'dimensions.height': data.dimensions.height,
+  private fillForm(room: Room) {
+    this.room = room;
+    this.form = this.formBuilder.group(room);
+    this.addRequiredValidator('name', 'type', 'capacity');
+  }
+
+  private addRequiredValidator(...attributes) {
+    attributes.forEach(attribute => {
+      this.form.controls[attribute].setValidators([Validators.required]);
     });
   }
 
   onFormSubmit(room: Room) {
-    this.roomService.updateRoom(this.campusId, this.floorId.toString(), this.roomId, room).subscribe(_ => {
+    this.roomService.updateRoom(this.campusId, this.floorId.toString(), room.id, room).subscribe(_ => {
       this.snackBar.open('Settings saved.', 'Back to overview', {
         duration: 3000
       }).onAction().subscribe(data => {

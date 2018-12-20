@@ -8,11 +8,6 @@ import {Floor} from '../models/floor.model';
 })
 export class FloorService {
 
-  db = firebase.firestore();
-
-  constructor() {
-  }
-
   /**
    * onSnapshot -> keep listening for updates.
    * Because firestore returns a Promise, we need to cast it to an Observable.
@@ -20,7 +15,6 @@ export class FloorService {
    * @param campusId The campus on which the floor is located
    */
   getFloors(campusId: string): Observable<Floor[]> {
-
     return Observable.create(observer => {
       this.getFloorCollection(campusId).onSnapshot(snapshot => {
         observer.next(<Floor[]>snapshot.docs.map(doc => doc.data()));
@@ -46,6 +40,6 @@ export class FloorService {
    * @param campusId The campus on which the floor is located
    */
   getFloorCollection(campusId: string) {
-    return this.db.collection('campuses/' + campusId + '/floors');
+    return firebase.firestore().collection('campuses/' + campusId + '/floors');
   }
 }
