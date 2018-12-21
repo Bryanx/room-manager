@@ -1,4 +1,4 @@
-<h1>{{initCaps(room.type)}}: {{room.name}}</h1>
+<h1>{{initCaps(room.type.toString())}}: {{room.name}}</h1>
 <h2>Op verdieping {{floorId}}</h2>
 
 <form *ngIf="room && form" [formGroup]="form" (submit)="onFormSubmit(form.value)">

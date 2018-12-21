@@ -1,8 +1,8 @@
 import {Component, ElementRef, HostBinding, HostListener, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {Room, RoomType} from '../../models/room.model';
+import {Room} from '../../models/room.model';
 import {RoomService} from '../../services/room.service';
 import {MatSnackBar} from '@angular/material';
-import {interval, Subscription} from 'rxjs';
+import {interval, Subscription, timer} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 @Component({
@@ -15,11 +15,13 @@ export class RoomMapComponent implements OnChanges {
   @Input() campusId: string;
   @Input() floorId: string;
   @Input() clearView: boolean;
-  @HostBinding('class.selected') selected: boolean;
-  @HostBinding('class.occupied') occupied: boolean;
-  timer: Subscription;
+  @HostBinding('class.selected') isSelected: boolean;
+  @HostBinding('class.isOccupied') isOccupied: boolean;
+  occupiedTimer: Subscription = new Subscription();
+  selectTimer: Subscription = new Subscription();
   isReservable: boolean;
   hasCrowdedness: boolean;
+  occupiedTimeLeft: string;
 
   constructor(private roomService: RoomService,
               private eRef: ElementRef,
@@ -28,9 +30,9 @@ export class RoomMapComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['room']) {
-      this.occupied = this.room.occupied;
+      this.isOccupied = this.room.occupied;
     }
-    if (this.occupied) {
+    if (this.isOccupied) {
       this.setOccupiedTimer();
     }
     this.isReservable = !this.clearView && ['vergaderzaal', 'aula', 'klaslokaal'].includes(this.room.type.toString());
@@ -42,7 +44,10 @@ export class RoomMapComponent implements OnChanges {
    * if someone clicks outside this component: selected = false
    */
   @HostListener('document:click', ['$event']) onClick(event) {
-    this.selected = this.eRef.nativeElement.contains(event.target);
+    this.isSelected = this.eRef.nativeElement.contains(event.target);
+    if (this.isSelected) {
+      this.setSelectionTimer();
+    }
   }
 
   getCrowdednessColor(room: Room) {
@@ -68,20 +73,24 @@ export class RoomMapComponent implements OnChanges {
   }
 
   setOccupiedTimer() {
-    this.timer = interval(1000)
-      .pipe(map(_ => {
-          const now = new Date().getTime();
-          const future = this.room.reservationStart + (this.room.reservationDuration * 10000); // 3600000
-          return future - now;
-        })
-      ).subscribe(timeLeft => {
-        this.room.timeLeft = new Date(timeLeft).toUTCString().split(' ')[4];
+    const future = this.room.reservationStart + (this.room.reservationDuration * 10000); // 3600000
+    this.occupiedTimer = interval(1000)
+      .pipe(map(_ => future - new Date().getTime()))
+      .subscribe(timeLeft => {
+        this.occupiedTimeLeft = new Date(timeLeft).toUTCString().split(' ')[4];
         if (timeLeft <= 1) {
-          this.timer.unsubscribe();
+          this.occupiedTimer.unsubscribe();
           this.room.occupied = false;
-          this.room.timeLeft = '';
+          this.isOccupied = false;
           this.updateRoom(this.room, true, this.room.name + ' is niet meer bezet.');
         }
       });
+  }
+
+  setSelectionTimer() {
+    if (!this.selectTimer.closed) {
+      this.selectTimer.unsubscribe();
+    }
+    this.selectTimer = timer(5000).subscribe(_ => this.isSelected = false);
   }
 }

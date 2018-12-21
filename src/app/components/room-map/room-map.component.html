@@ -9,7 +9,7 @@
       class="crowdedness">{{room.capacity}}
   <mat-icon class="capacity-icon">people</mat-icon></span>
 
-<mat-icon *ngIf="selected"
+<mat-icon *ngIf="isSelected"
           class="info"
           matTooltip="Meer informatie"
           [routerLink]="['/campuses/', campusId, 'floors', floorId, 'rooms', room.id]">info
@@ -17,9 +17,9 @@
 
 <h1>{{room.name}}</h1>
 
-<span *ngIf="occupied && isReservable" matTooltip="Tijd tot de ruimte vrijkomt">{{room.timeLeft}}</span>
+<span *ngIf="isOccupied && isReservable" matTooltip="Tijd tot de ruimte vrijkomt">{{occupiedTimeLeft}}</span>
 
-<button *ngIf="selected && !occupied && isReservable"
+<button *ngIf="isSelected && !isOccupied && isReservable"
         mat-raised-button [matMenuTriggerFor]='reserveMenu'>Reserveren</button>
 <mat-menu #reserveMenu="matMenu">
   <button mat-menu-item (click)="reserveRoom(room, 1)">1 uur</button>
@@ -27,7 +27,7 @@
   <button mat-menu-item (click)="reserveRoom(room, 3)">3 uur</button>
 </mat-menu>
 
-<mat-slider *ngIf="selected && hasCrowdedness"
+<mat-slider *ngIf="isSelected && hasCrowdedness"
             thumbLabel
             [max]="room.capacity"
             [value]="room.crowdedness"
@@ -36,8 +36,8 @@
 
 <mat-icon class="beamer"
           *ngIf="!clearView && room.beamer"
-          matTooltip="Beamer aanwezig">linked_camera
-</mat-icon>
+          matTooltip="Beamer aanwezig">linked_camera</mat-icon>
+
 <app-icon class="room-type"
           [name]="!clearView && room.type"
           matTooltip="{{room.type}}"

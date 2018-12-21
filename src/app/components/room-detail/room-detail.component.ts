@@ -68,7 +68,6 @@ export class RoomDetailComponent implements OnInit {
   }
 
   getRoomTypes() {
-      let enumValues = getEnumValues(RoomType);
-      return enumValues;
+      return getEnumValues(RoomType);
   }
 }

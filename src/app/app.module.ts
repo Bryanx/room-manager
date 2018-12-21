@@ -21,7 +21,7 @@ import {
   MatCheckboxModule,
   MatFormFieldModule,
   MatSliderModule,
-  MatTooltipModule, MatMenuModule, MatButtonToggleModule, MatSnackBarModule, MatSelectModule
+  MatTooltipModule, MatMenuModule, MatButtonToggleModule, MatSnackBarModule, MatSelectModule, MatRippleModule
 } from '@angular/material';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -83,7 +83,8 @@ const appRoutes: Routes = [
     MatMenuModule,
     MatButtonToggleModule,
     MatSnackBarModule,
-    MatSelectModule
+    MatSelectModule,
+    MatRippleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

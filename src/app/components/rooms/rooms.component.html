@@ -27,6 +27,8 @@
          [class.list-view]="listView"
          [class.map-view]="!listView">
   <app-room-map *ngFor="let room of rooms"
+                matRipple
+                matRippleColor="rgba(0, 0, 0, .05)"
                 [room]="room"
                 [clearView]="clearView"
                 [campusId]="campusId"
