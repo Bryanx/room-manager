@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {Campus} from './models/campus.model';
@@ -9,17 +9,12 @@ import {CampusService} from './services/campus.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  // public items: Observable<any[]>;
-  //
-  // constructor(db: AngularFirestore) {
-  //   this.items = db.collection('/campus/rkw2vhU241rEHeGU7U0C/floor/TSl8TdmS7Qp5pzcCfc23/classroom').valueChanges();
-  // }
+export class AppComponent implements OnInit {
 
 
   campuses: Campus[];
 
-  constructor(db: AngularFirestore, private campusService: CampusService) {
+  constructor(private campusService: CampusService) {
   }
 
   ngOnInit() {

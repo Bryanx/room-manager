@@ -2,30 +2,22 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import * as firebase from 'firebase';
 import {Campus} from '../models/campus.model';
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CampusService {
 
-  ref = firebase.firestore().collection('campuses');
+  campusCollection: AngularFirestoreCollection<Campus> = this.afs.collection('campuses');
 
-  constructor() {
-  }
+  constructor(private afs: AngularFirestore) { }
 
   getCampuses(): Observable<Campus[]> {
-    return Observable.create(observer => {
-      this.ref.onSnapshot(snapshot => {
-        observer.next(<Campus[]>snapshot.docs.map(doc => doc.data()));
-      });
-    });
+    return this.campusCollection.valueChanges();
   }
 
   getCampus(campusId: string): Observable<Campus> {
-    return Observable.create(observer => {
-      this.ref.doc(campusId).get().then(doc => {
-        observer.next(<Campus>doc.data());
-      });
-    });
+    return this.campusCollection.doc<Campus>(campusId).valueChanges();
   }
 }

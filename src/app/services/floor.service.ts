@@ -2,44 +2,30 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import * as firebase from 'firebase';
 import {Floor} from '../models/floor.model';
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {Campus} from '../models/campus.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FloorService {
 
-  /**
-   * onSnapshot -> keep listening for updates.
-   * Because firestore returns a Promise, we need to cast it to an Observable.
-   * We keep adding/updating floors on changes from the store to the Observable.
-   * @param campusId The campus on which the floor is located
-   */
+  constructor(private afs: AngularFirestore) { }
+
   getFloors(campusId: string): Observable<Floor[]> {
-    return Observable.create(observer => {
-      this.getFloorCollection(campusId).onSnapshot(snapshot => {
-        observer.next(<Floor[]>snapshot.docs.map(doc => doc.data()));
-      });
-    });
+    return this.getFloorCollection(campusId).valueChanges();
   }
 
-  /**
-   * Gets information about a single floor
-   * @param campusId The campus on which the floor is located
-   * @param floorId the floor number
-   */
   getFloor(campusId: string, floorId: string): Observable<Floor> {
-    return Observable.create((observer) => {
-      this.getFloorCollection(campusId).doc(floorId).get().then((doc) => {
-        observer.next(<Floor>doc.data());
-      });
-    });
+    return this.getFloorCollection(campusId).doc<Floor>(floorId).valueChanges();
+
   }
 
   /**
-   * Gets all the floors for a given campus
-   * @param campusId The campus on which the floor is located
+   * Get a firestore collection of floors.
+   * @param campusId The campus on which the floor is located.
    */
-  getFloorCollection(campusId: string) {
-    return firebase.firestore().collection('campuses/' + campusId + '/floors');
+  getFloorCollection(campusId: string): AngularFirestoreCollection<Floor> {
+    return this.afs.collection(`campuses/${campusId}/floors`);
   }
 }
