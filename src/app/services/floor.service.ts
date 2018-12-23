@@ -28,7 +28,7 @@ export class FloorService {
    * @param floorId the floor number
    */
   getFloor(campusId: string, floorId: string): Observable<Floor> {
-    return new Observable((observer) => {
+    return Observable.create((observer) => {
       this.getFloorCollection(campusId).doc(floorId).get().then((doc) => {
         observer.next(<Floor>doc.data());
       });

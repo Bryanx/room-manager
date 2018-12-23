@@ -13,13 +13,13 @@
 
   <section class="buttons view-buttons">
     <button *ngIf="clearView" mat-icon-button matTooltip="Eigenschappen tonen"
-            (click)="clearView = false"><mat-icon>crop_original</mat-icon></button>
+            (click)="setView('clearView', false)"><mat-icon>crop_original</mat-icon></button>
     <button *ngIf="!clearView" mat-icon-button matTooltip="Eigenschappen verbergen"
-            (click)="clearView = true"><mat-icon>crop_square</mat-icon></button>
+            (click)="setView('clearView', true)"><mat-icon>crop_square</mat-icon></button>
     <button *ngIf="listView" mat-icon-button matTooltip="Weergeven als kaart"
-            (click)="listView = false"><mat-icon>map</mat-icon></button>
+            (click)="setView('listView', false)"><mat-icon>map</mat-icon></button>
     <button *ngIf="!listView" mat-icon-button  matTooltip="Weergeven als lijst"
-            (click)="listView = true"><mat-icon>list</mat-icon></button>
+            (click)="setView('listView', true)"><mat-icon>list</mat-icon></button>
   </section>
 </header>
 

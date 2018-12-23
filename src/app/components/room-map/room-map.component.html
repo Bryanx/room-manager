@@ -19,7 +19,7 @@
 
 <span *ngIf="isOccupied && isReservable" matTooltip="Tijd tot de ruimte vrijkomt">{{occupiedTimeLeft}}</span>
 
-<button *ngIf="isSelected && !isOccupied && isReservable"
+<button class="reserve-button" *ngIf="isSelected && !isOccupied && isReservable"
         mat-raised-button [matMenuTriggerFor]='reserveMenu'>Reserveren</button>
 <mat-menu #reserveMenu="matMenu">
   <button mat-menu-item (click)="reserveRoom(room, 1)">1 uur</button>

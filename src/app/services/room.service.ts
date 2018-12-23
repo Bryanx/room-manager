@@ -24,7 +24,7 @@ export class RoomService {
    * @param floorId to lookup
    */
   getRooms(campusId: string, floorId: string): Observable<Room[]> {
-    return new Observable(observer => {
+    return Observable.create(observer => {
       this.getRoomCollection(campusId, floorId).onSnapshot(snapshot => {
         observer.next(<Room[]>snapshot.docs.map(doc => doc.data()));
       });
@@ -32,7 +32,7 @@ export class RoomService {
   }
 
   getRoom(campusId: string, floorId: string, roomId: string): Observable<Room> {
-    return new Observable(observer => {
+    return Observable.create(observer => {
       this.getRoomCollection(campusId, floorId).doc(roomId).get().then(doc => {
         observer.next(<Room> doc.data());
       });
@@ -50,7 +50,7 @@ export class RoomService {
   }
 
   updateRoom(campusId: string, floorId: string, roomId: string, room: Room): Observable<Room> {
-    return new Observable((observer) => {
+    return Observable.create((observer) => {
       this.getRoomCollection(campusId, floorId).doc(roomId).update(room).then(_ => {
         observer.next();
       });

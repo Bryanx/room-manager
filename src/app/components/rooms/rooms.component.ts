@@ -6,6 +6,7 @@ import {Room} from '../../models/room.model';
 import {Floor} from '../../models/floor.model';
 import {combineLatest} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
+import {LocalStorageService} from '../../services/local-storage.service';
 
 @Component({
   selector: 'app-floor-detail',
@@ -23,7 +24,9 @@ export class RoomsComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private floorService: FloorService,
               private roomService: RoomService,
-              private router: Router) { }
+              private router: Router,
+              private localStorage: LocalStorageService) {
+  }
 
   ngOnInit() {
     this.route.paramMap.pipe(
@@ -38,9 +41,18 @@ export class RoomsComponent implements OnInit {
       this.floor = data[0];
       this.rooms = data[1];
     });
+    const listView = this.localStorage.fetch('listView');
+    const clearView = this.localStorage.fetch('clearView');
+    this.listView = listView ? listView : false;
+    this.clearView = clearView ? clearView : false;
   }
 
   changeFloor(change: number) {
     this.router.navigate(['/campuses', this.campusId, 'floors', +this.floorId + change]);
+  }
+
+  setView(key: 'listView' | 'clearView', bool: boolean) {
+    this.localStorage.store(key, bool);
+    this[key] = bool;
   }
 }

@@ -10,6 +10,7 @@ import {RoomDetailComponent} from './components/room-detail/room-detail.componen
 import {RouterModule, Routes} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
+import {StorageServiceModule} from 'angular-webstorage-service';
 import {
   MatInputModule,
   MatPaginatorModule,
@@ -27,7 +28,7 @@ import {
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RoomsComponent} from './components/rooms/rooms.component';
 import {SvgIconComponent} from './components/svg-icon/svg-icon.component';
-import { RoomMapComponent } from './components/room-map/room-map.component';
+import {RoomMapComponent} from './components/room-map/room-map.component';
 
 const appRoutes: Routes = [
   {
@@ -84,7 +85,8 @@ const appRoutes: Routes = [
     MatButtonToggleModule,
     MatSnackBarModule,
     MatSelectModule,
-    MatRippleModule
+    MatRippleModule,
+    StorageServiceModule
   ],
   providers: [],
   bootstrap: [AppComponent]

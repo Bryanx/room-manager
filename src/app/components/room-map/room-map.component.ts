@@ -16,7 +16,7 @@ export class RoomMapComponent implements OnChanges {
   @Input() floorId: string;
   @Input() clearView: boolean;
   @HostBinding('class.selected') isSelected: boolean;
-  @HostBinding('class.isOccupied') isOccupied: boolean;
+  @HostBinding('class.occupied') isOccupied: boolean;
   occupiedTimer: Subscription = new Subscription();
   selectTimer: Subscription = new Subscription();
   isReservable: boolean;

@@ -15,6 +15,7 @@ $color-blue: #031d5b;
 
 html, body {
   height: 100%;
+  overflow-y: overlay;
 }
 
 body {
@@ -60,4 +61,10 @@ h2 {
   position: absolute;
   bottom: $padding;
   left: $padding;
+}
+
+@mixin flex-center() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
