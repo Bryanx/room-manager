@@ -81,13 +81,13 @@ export class RoomMapComponent implements OnChanges {
         if (timeLeft <= 1) {
           this.occupiedTimer.unsubscribe();
           this.room.occupied = false;
-          this.isOccupied = false;
           this.updateRoom(this.room, true, this.room.name + ' is niet meer bezet.');
         }
       });
   }
 
   setSelectionTimer() {
+    // if the selection timer is still running we restart the timer.
     if (!this.selectTimer.closed) {
       this.selectTimer.unsubscribe();
     }

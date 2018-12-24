@@ -4,7 +4,7 @@ import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {Room, RoomType} from '../../models/room.model';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {switchMap} from 'rxjs/operators';
-import {initCaps, getEnumValues} from '../../util/utils';
+import {initCaps, getStringEnumValues} from '../../util/utils';
 import {MatSnackBar} from '@angular/material';
 
 @Component({
@@ -58,16 +58,18 @@ export class RoomDetailComponent implements OnInit {
   }
 
   onFormSubmit(room: Room) {
-    this.roomService.updateRoom(this.campusId, this.floorId.toString(), this.roomId, room).subscribe(_ => {
+    this.roomService.updateRoom(this.campusId, this.floorId.toString(), this.roomId, room)
+      .subscribe(_ => {
         this.snackBar.open('Opgeslagen', 'Terug naar overzicht', {
           duration: 3000
-        }).onAction().subscribe(data => {
-          this.router.navigate(['/campuses', this.campusId, 'floors', this.floorId]);
-        });
+        }).onAction()
+          .subscribe(__ => {
+            this.router.navigate(['/campuses', this.campusId, 'floors', this.floorId]);
+          });
       });
   }
 
   getRoomTypes() {
-      return getEnumValues(RoomType);
+      return getStringEnumValues(RoomType);
   }
 }
