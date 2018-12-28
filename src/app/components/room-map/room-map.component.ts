@@ -1,9 +1,10 @@
-import {Component, ElementRef, HostBinding, HostListener, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, ElementRef, HostBinding, HostListener, Input, NgZone, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {Room} from '../../models/room.model';
 import {RoomService} from '../../services/room.service';
 import {MatSnackBar} from '@angular/material';
 import {interval, Subscription, timer} from 'rxjs';
 import {map} from 'rxjs/operators';
+import Timer = NodeJS.Timer;
 
 @Component({
   selector: 'app-room-map',
@@ -17,7 +18,7 @@ export class RoomMapComponent implements OnChanges {
   @Input() clearView: boolean;
   @HostBinding('class.selected') isSelected: boolean;
   @HostBinding('class.occupied') isOccupied: boolean;
-  occupiedTimer: Subscription = new Subscription();
+  occupiedTimer: Subscription;
   selectTimer: Subscription = new Subscription();
   isReservable: boolean;
   hasCrowdedness: boolean;
@@ -67,19 +68,20 @@ export class RoomMapComponent implements OnChanges {
 
   reserveRoom(room: Room, hours: number) {
     room.occupied = true;
-    room.reservationStart = new Date().getTime();
     room.reservationDuration = hours;
+    this.room.reservationStart = new Date().getTime();
+    this.isOccupied = true;
     this.updateRoom(room, true, room.name + ' werd gereserveerd.'); // this will trigger changes, which will start a timer
   }
 
   setOccupiedTimer() {
     const future = this.room.reservationStart + (this.room.reservationDuration * 10000); // 3600000
-    this.occupiedTimer = interval(1000)
+    const occupiedTimer = interval(1000)
       .pipe(map(_ => future - new Date().getTime()))
       .subscribe(timeLeft => {
         this.occupiedTimeLeft = new Date(timeLeft).toUTCString().split(' ')[4];
         if (timeLeft <= 1) {
-          this.occupiedTimer.unsubscribe();
+          occupiedTimer.unsubscribe();
           this.room.occupied = false;
           this.updateRoom(this.room, true, this.room.name + ' is niet meer bezet.');
         }
