@@ -74,7 +74,7 @@ export class RoomMapComponent implements OnChanges {
   }
 
   setOccupiedTimer() {
-    const future = this.room.reservationStart + (this.room.reservationDuration * 10000); // 3600000
+    const future = this.room.reservationStart + (this.room.reservationDuration * 3600000); // 3600000
     const occupiedTimer = interval(1000)
       .pipe(map(_ => future - new Date().getTime()))
       .subscribe(timeLeft => {
