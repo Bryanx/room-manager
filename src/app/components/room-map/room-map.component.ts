@@ -4,7 +4,6 @@ import {RoomService} from '../../services/room.service';
 import {MatSnackBar} from '@angular/material';
 import {interval, Subscription, timer} from 'rxjs';
 import {map} from 'rxjs/operators';
-import Timer = NodeJS.Timer;
 
 @Component({
   selector: 'app-room-map',
