@@ -11,15 +11,15 @@
     <h2>{{floor != null ? floor.description : 'Deze verdieping bestaat niet.'}}</h2>
   </section>
 
-  <section class="buttons view-buttons">
+  <section class="buttons">
+    <button class="view-buttons" *ngIf="listView" mat-icon-button matTooltip="Weergeven als kaart"
+            (click)="setView('listView', false)"><mat-icon>map</mat-icon></button>
+    <button class="view-buttons" *ngIf="!listView" mat-icon-button  matTooltip="Weergeven als lijst"
+            (click)="setView('listView', true)"><mat-icon>list</mat-icon></button>
     <button *ngIf="clearView" mat-icon-button matTooltip="Eigenschappen tonen"
             (click)="setView('clearView', false)"><mat-icon>crop_original</mat-icon></button>
     <button *ngIf="!clearView" mat-icon-button matTooltip="Eigenschappen verbergen"
             (click)="setView('clearView', true)"><mat-icon>crop_square</mat-icon></button>
-    <button *ngIf="listView" mat-icon-button matTooltip="Weergeven als kaart"
-            (click)="setView('listView', false)"><mat-icon>map</mat-icon></button>
-    <button *ngIf="!listView" mat-icon-button  matTooltip="Weergeven als lijst"
-            (click)="setView('listView', true)"><mat-icon>list</mat-icon></button>
   </section>
 </header>
 
