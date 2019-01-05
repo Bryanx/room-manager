@@ -31,6 +31,7 @@ import {SvgIconComponent} from './components/svg-icon/svg-icon.component';
 import {RoomMapComponent} from './components/room-map/room-map.component';
 import { AboutComponent } from './components/about/about.component';
 import { CampusesComponent } from './components/campuses/campuses.component';
+import { DataTableComponent } from './components/data-table/data-table.component';
 
 const appRoutes: Routes = [
   {
@@ -69,6 +70,7 @@ const appRoutes: Routes = [
     RoomMapComponent,
     AboutComponent,
     CampusesComponent,
+    DataTableComponent,
   ],
   imports: [
     BrowserModule,

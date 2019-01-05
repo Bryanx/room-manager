@@ -5,23 +5,3 @@
     width: 60%;
   }
 }
-
-.list-container {
-  display: flex;
-  flex-direction: column;
-  max-height: 500px;
-  min-width: 210px;
-  overflow: auto;
-}
-
-.title-col {
-  flex: 0 0 100px !important;
-  white-space: unset !important;
-}
-
-.data-cell {
-  cursor: pointer;
-  &:hover {
-    background-color: #f5f5f5;
-  }
-}

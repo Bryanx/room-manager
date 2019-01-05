@@ -13,10 +13,14 @@ export class CampusService {
 
   constructor(private afs: AngularFirestore) { }
 
-  getCampuses(): Observable<Campus[]> {
+  getCampuses(): Observable<Object[]> {
     return this.campusCollection.valueChanges();
   }
 
+  /**
+   * Get an existing campus and listen to changes.
+   * @param campusId The id of the campus.
+   */
   getCampus(campusId: string): Observable<Campus> {
     return this.campusCollection.doc<Campus>(campusId).valueChanges();
   }

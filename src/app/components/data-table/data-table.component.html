@@ -1,0 +1,13 @@
+<div class="list-container mat-elevation-z8">
+  <table *ngIf="data" mat-table #table [dataSource]="data">
+
+    <ng-container *ngFor="let column of displayedColumns" matColumnDef="{{column}}">
+      <th mat-header-cell *matHeaderCellDef> {{column}}</th>
+      <td mat-cell *matCellDef="let element" class="title-col">{{element[column]}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr class="data-cell" mat-row *matRowDef="let row; columns: displayedColumns;"
+        [routerLink]="[redirectUrl, row.id]"></tr>
+  </table>
+</div>

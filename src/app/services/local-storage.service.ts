@@ -19,7 +19,7 @@ export class LocalStorageService {
   }
 
   /**
-   * retrieve a value from the storage by its key.
+   * retrieve a value from the storage by its key, if it doesn't exist returns null.
    * @param key The key of the required value.
    */
   fetch(key: string) {

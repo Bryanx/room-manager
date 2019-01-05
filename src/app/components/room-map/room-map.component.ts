@@ -17,7 +17,7 @@ export class RoomMapComponent implements OnChanges {
   @Input() clearView: boolean;
   @HostBinding('class.selected') isSelected: boolean;
   @HostBinding('class.occupied') isOccupied: boolean;
-  occupiedTimer: Subscription;
+  occupiedTimer: Subscription = new Subscription();
   selectTimer: Subscription = new Subscription();
   isReservable: boolean;
   hasCrowdedness: boolean;
@@ -75,12 +75,12 @@ export class RoomMapComponent implements OnChanges {
 
   setOccupiedTimer() {
     const future = this.room.reservationStart + (this.room.reservationDuration * 3600000); // 3600000
-    const occupiedTimer = interval(1000)
+    this.occupiedTimer = interval(1000)
       .pipe(map(_ => future - new Date().getTime()))
       .subscribe(timeLeft => {
         this.occupiedTimeLeft = new Date(timeLeft).toUTCString().split(' ')[4];
         if (timeLeft <= 1) {
-          occupiedTimer.unsubscribe();
+          this.occupiedTimer.unsubscribe();
           this.room.occupied = false;
           this.updateRoom(this.room, true, this.room.name + ' is niet meer bezet.');
         }

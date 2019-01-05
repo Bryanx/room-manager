@@ -16,6 +16,11 @@ export class FloorService {
     return this.getFloorCollection(campusId).valueChanges();
   }
 
+  /**
+   * Get a campus' floor by its id and floor number and listen to changes.
+   * @param campusId the given campus
+   * @param floorId the required floor.
+   */
   getFloor(campusId: string, floorId: string): Observable<Floor> {
     return this.getFloorCollection(campusId).doc<Floor>(floorId).valueChanges();
 

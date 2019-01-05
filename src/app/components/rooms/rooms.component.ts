@@ -48,7 +48,7 @@ export class RoomsComponent implements OnInit {
   }
 
   changeFloor(change: number) {
-    this.router.navigate(['/campuses', this.campusId, 'floors', +this.floorId + change]);
+    this.router.navigate(['/campuses', this.campusId, 'floors', + this.floorId + change]);
   }
 
   setView(key: 'listView' | 'clearView', bool: boolean) {

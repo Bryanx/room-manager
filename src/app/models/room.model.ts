@@ -18,7 +18,6 @@ export class Room {
   occupied: boolean;
   reservationStart: number;
   reservationDuration: number;
-  timeLeft: string;
   dimensions: {
     x: number,
     y: number,
