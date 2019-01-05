@@ -13,7 +13,7 @@ export class CampusService {
 
   constructor(private afs: AngularFirestore) { }
 
-  getCampuses(): Observable<Object[]> {
+  getCampuses(): Observable<Campus[]> {
     return this.campusCollection.valueChanges();
   }
 
