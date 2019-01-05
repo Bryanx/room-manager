@@ -32,7 +32,7 @@
             [max]="room.capacity"
             [value]="room.crowdedness"
             (input)="room.crowdedness = $event.value"
-            (blur)="updateRoom(room)"></mat-slider>
+            (mouseup)="updateRoom(room)"></mat-slider>
 
 <mat-icon class="beamer"
           *ngIf="!clearView && room.beamer"
