@@ -29,22 +29,33 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RoomsComponent} from './components/rooms/rooms.component';
 import {SvgIconComponent} from './components/svg-icon/svg-icon.component';
 import {RoomMapComponent} from './components/room-map/room-map.component';
+import { AboutComponent } from './components/about/about.component';
+import { CampusesComponent } from './components/campuses/campuses.component';
 
 const appRoutes: Routes = [
   {
+    path: '',
+    component: CampusesComponent,
+  },
+  {
+    path: 'about',
+    component: AboutComponent,
+  },
+  {
+    path: 'campuses',
+    component: CampusesComponent,
+  },
+  {
     path: 'campuses/:campusId',
     component: FloorsComponent,
-    data: {title: 'Floors'}
   },
   {
     path: 'campuses/:campusId/floors/:floorId',
-    component: RoomsComponent,
-    data: {title: 'Floor'}
+    component: RoomsComponent
   },
   {
     path: 'campuses/:campusId/floors/:floorId/rooms/:roomId',
-    component: RoomDetailComponent,
-    data: {title: 'Room'}
+    component: RoomDetailComponent
   },
 ];
 
@@ -56,6 +67,8 @@ const appRoutes: Routes = [
     RoomDetailComponent,
     SvgIconComponent,
     RoomMapComponent,
+    AboutComponent,
+    CampusesComponent,
   ],
   imports: [
     BrowserModule,

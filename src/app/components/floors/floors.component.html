@@ -1,7 +1,7 @@
 <h1>Campus <span *ngIf="campus">{{campus.name}}</span></h1>
 <h2>De verdiepingen:</h2>
 
-<div class="example-container mat-elevation-z8">
+<div class="list-container mat-elevation-z8">
   <table *ngIf="floors" mat-table #table [dataSource]="floors">
 
     <ng-container matColumnDef="number">

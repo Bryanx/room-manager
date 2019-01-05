@@ -1,0 +1,21 @@
+<h1>Campusoverzicht</h1>
+<h2>Kies een campus om de verdiepingen te bekijken</h2>
+
+<div class="list-container mat-elevation-z8">
+  <table *ngIf="campuses" mat-table #table [dataSource]="campuses">
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Naam</th>
+      <td mat-cell *matCellDef="let element" class="title-col">{{element.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="city">
+      <th mat-header-cell *matHeaderCellDef> Stad</th>
+      <td mat-cell *matCellDef="let element" class="title-col">{{element.city}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="data-cell"
+        [routerLink]="['/campuses/', row.name.toString().toLowerCase()]"></tr>
+  </table>
+</div>
