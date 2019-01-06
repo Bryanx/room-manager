@@ -11,7 +11,6 @@ import {CampusService} from './services/campus.service';
 })
 export class AppComponent implements OnInit {
 
-
   campuses: Campus[];
 
   constructor(private campusService: CampusService) {
