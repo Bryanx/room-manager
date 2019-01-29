@@ -19,7 +19,6 @@ export class RoomDetailComponent implements OnInit {
     type: RoomType.onbekend,
   };
   form: FormGroup;
-  error: boolean;
   campusId: string;
   floorId: String = '0';
   roomId: string;
